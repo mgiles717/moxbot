@@ -10,7 +10,9 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+
 const prefix = "!"
+
 
 func checkNilErr(e error) {
 	if e != nil {
@@ -18,11 +20,13 @@ func checkNilErr(e error) {
 	}
 }
 
+
 func StartBot(bot_token string) {
 	discord, err := discordgo.New("Bot " + bot_token)
 	checkNilErr(err)
-
-	discord.AddHandler(newMessage)
+	
+	discord.AddHandler(NewMessage)
+	discord.AddHandler(NewMessage)
 
 	discord.Open()
 	defer discord.Close()
@@ -35,7 +39,8 @@ func StartBot(bot_token string) {
 
 }
 
-func newMessage(discord *discordgo.Session, message *discordgo.MessageCreate) {
+
+func NewMessage(discord *discordgo.Session, message *discordgo.MessageCreate) {
 	if message.Author.ID == discord.State.User.ID {
 		return
 	}
@@ -43,5 +48,9 @@ func newMessage(discord *discordgo.Session, message *discordgo.MessageCreate) {
 	switch {
 	case strings.Contains(message.Content, prefix+"hello"):
 		discord.ChannelMessageSend(message.ChannelID, "Hello!")
+	case strings.Contains(message.Content, prefix+"balance"):
+		CheckBalance(message.Author.ID)
+		discord.ChannelMessageSend(message.ChannelID, "You have 0 moxcoins!")
 	}
 }
+

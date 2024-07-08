@@ -16,5 +16,6 @@ func main() {
 
 	var bot_token = os.Getenv("BOT_TOKEN")
 
+	client.InitialiseEconomy()
 	client.StartBot(bot_token)
 }
