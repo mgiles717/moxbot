@@ -16,6 +16,10 @@ func main() {
 
 	var bot_token = os.Getenv("BOT_TOKEN")
 
-	client.InitialiseEconomy()
+	// If data/economy.parquet does not exist, run client.InitialiseEconomy() to create it
+
+	if _, err := os.Stat("data/economy.parquet"); os.IsNotExist(err) {
+		client.InitialiseEconomy()
+	}
 	client.StartBot(bot_token)
 }
